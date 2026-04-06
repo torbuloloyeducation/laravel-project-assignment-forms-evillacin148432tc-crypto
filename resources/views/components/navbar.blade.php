@@ -4,6 +4,7 @@
     <a href="/contact">Contact</a> |
     <a href="/services">Services</a> |
     <a href="/showcases">Showcases</a> |
-    <a href="/blog">Blog</a>
+    <a href="/blog">Blog</a> |
+    <a href="/emails">Emails</a>
 </nav>
 <hr>
