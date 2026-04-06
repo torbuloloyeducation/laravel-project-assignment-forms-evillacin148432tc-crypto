@@ -1,0 +1,2 @@
+### task 1.
+The user types an email in the form and clicks submit. The form sends the data to the server using POST. Laravel receives the email and saves it in the session. After that, the page reloads and shows the saved emails.

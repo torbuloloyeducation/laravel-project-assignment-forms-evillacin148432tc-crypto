@@ -1,38 +1,59 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
-Route::view('/', 'welcome', [
-    'greeting' => 'Hello, World!',
-    'name' => 'John Doe',
-    'age' => 30,
-    'tasks' => [
-        'Learn Laravel',
-        'Build a project',
-        'Deploy to production',
-    ],
-]);
-
+// Pages
+Route::view('/', 'welcome');
 Route::view('/about', 'about');
 Route::view('/contact', 'contact');
+Route::view('/services', 'services');
+Route::view('/showcases', 'showcases');
+Route::view('/blog', 'blog');
 
-Route::get('/formtest', function(){
-    $emails = session()->get('$emails', []);
+// Email Form (GET + POST)
+Route::match(['get', 'post'], '/emails', function (Request $request) {
 
-    return view('formtest',[
-        'emails' => $emails,
-    ]);
+    $emails = session('emails', []);
+
+    if ($request->isMethod('post')) {
+
+        // 1. Validate input
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        // 2. Check duplicate
+        if (in_array($request->email, $emails)) {
+            return back()->with('warning', 'Email already exists.');
+        }
+
+        // 3. Limit to 5 emails
+        if (count($emails) >= 5) {
+            return back()->with('warning', 'Only 5 emails allowed.');
+        }
+
+        // 4. Save email
+        $emails[] = $request->email;
+        session(['emails' => $emails]);
+
+        return back()->with('success', 'Email added.');
+    }
+
+    // Show page
+    return view('emails', compact('emails'));
 });
 
-Route::post('/formtest', function(){
-    $email = request('email');
 
-    session()->push('$emails', $email);
+// Delete email
+Route::post('/emails/delete/{index}', function ($index) {
 
-    return redirect('/formtest');
-});
+    $emails = session('emails', []);
 
-Route::get('/delete-emails', function(){
-    session()->forget('$emails');
-    return redirect('/formtest');
+    if (isset($emails[$index])) {
+        unset($emails[$index]); // remove
+        session(['emails' => array_values($emails)]); // fix index
+    }
+
+    return back()->with('success', 'Email deleted.');
 });

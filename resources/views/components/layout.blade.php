@@ -1,29 +1,12 @@
-@props([
-    'title' => 'My Laravel App',
-])
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $title }}</title>
-        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-</head> 
-<style>
-    body{
-        background-color: #1c3056;
-        color: white;
-        font-family: Arial, sans-serif;
-    }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laravel Activity</title>
+</head>
 <body>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/contact">Contact</a>
-        <a href="/formtest">Form Test</a>
-    </nav>
-{{ $slot }}
-
+    <x-navbar />
+    {{ $slot }}
 </body>
 </html>
