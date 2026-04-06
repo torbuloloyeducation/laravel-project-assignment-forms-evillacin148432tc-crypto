@@ -9,13 +9,9 @@
         <p style="color: orange;">{{ session('warning') }}</p>
     @endif
 
-    @if($errors->any())
-        <ul style="color: red;">
-            @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    @endif
+    @foreach($errors->all() as $error)
+        <p style="color: red;">{{ $error }}</p>
+    @endforeach
 
     <form action="/emails" method="POST">
         @csrf
@@ -25,19 +21,17 @@
 
     <h2>Saved Emails</h2>
 
-    @if(count($emails) > 0)
-        <ul>
-            @foreach($emails as $index => $email)
-                <li>
-                    {{ $email }}
-                    <form action="/emails/delete/{{ $index }}" method="POST" style="display:inline;">
-                        @csrf
-                        <button type="submit">Delete</button>
-                    </form>
-                </li>
-            @endforeach
-        </ul>
-    @else
-        <p>No emails saved yet.</p>
-    @endif
+    <ul>
+        @forelse($emails as $index => $email)
+            <li>
+                {{ $email }}
+                <form action="/emails/delete/{{ $index }}" method="POST" style="display:inline;">
+                    @csrf
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        @empty
+            <p>No emails saved yet.</p>
+        @endforelse
+    </ul>
 </x-layout>
